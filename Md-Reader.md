@@ -56,13 +56,17 @@ The title bar shows a `*` next to the filename whenever there are unsaved edits.
 
 | File | Purpose |
 |---|---|
-| `md_editor.py` | Source code for the current reader + editor |
-| `dist/MD Reader.exe` | The compiled standalone app (~24 MB) |
+| `md_editor.py` | Source code for the current reader + editor (237 lines) |
+| `dist/MD Reader.exe` | The compiled standalone app (~24 MB) — **not** in version control, rebuild it |
+| `MD Reader.spec` | PyInstaller recipe, written by the build command below; `py -m PyInstaller "MD Reader.spec"` reruns the same build. Its paths are relative, so build from this folder |
 | `generate_icon.py` | Draws the app icon with Pillow — edit and re-run to tweak the design |
 | `icon.ico` | Multi-resolution app icon (16 / 32 / 48 / 64 / 128 / 256 px) |
 | `icon_preview.png` | Large preview of the icon design |
 | `USAGE.md` | End-user usage guide |
 | `md_reader.py` | Original read-only launcher (grip-based, superseded) |
+| `Md-Reader.md` | This document — the single source of truth for the project |
+| `VERSION` | Current version number, one line — see *Version control* below |
+| `.gitignore`, `.gitattributes` | Exclude regenerable output; store files byte for byte |
 
 ---
 
@@ -86,7 +90,9 @@ py -m PyInstaller --noconfirm --onefile --windowed --name "MD Reader" \
   md_editor.py
 ```
 
-To rebuild after editing the source, re-run that command from the `md-reader` folder.
+To rebuild after editing the source, re-run that command from the `md-reader`
+folder. It also writes `MD Reader.spec`; once that exists,
+`py -m PyInstaller --noconfirm "MD Reader.spec"` is the shorter equivalent.
 
 To regenerate the icon first (only needed if you change its design):
 
