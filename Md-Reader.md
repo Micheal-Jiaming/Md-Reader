@@ -106,10 +106,17 @@ py generate_icon.py
 
 ## Version control
 
-This project is its own Git repository: `git init` in `D:\claude\md-reader`, with
-a bare mirror at `D:\claude\repos\Md-Reader.git` registered as `origin`. The
-repository name matches this document's filename (`Md-Reader`); the folder keeps
-its lower-case name so existing paths and the build command still work.
+This project is its own Git repository, with two remotes:
+
+| Remote | Points at |
+|---|---|
+| `origin` | `https://github.com/Micheal-Jiaming/Md-Reader` — private |
+| `mirror` | `D:\claude\repos\Md-Reader.git` — local bare copy |
+
+The repository name matches this document's filename (`Md-Reader`); the folder
+keeps its lower-case name so existing paths and the build command still work.
+Authentication is the GitHub CLI acting as git's credential helper
+(`gh auth setup-git`), so pushes need no interactive prompt.
 
 Tracked: `md_editor.py`, `md_reader.py`, `generate_icon.py`, `MD Reader.spec`,
 `icon.ico`, `icon_preview.png`, `USAGE.md`, and this document. Ignored: `dist\`,
@@ -122,6 +129,7 @@ CRLF.
 **Versioning.** `VERSION` holds the current number; every release is tagged
 `v<number>`. The baseline is **1.0.0**, tagged `v1.0.0` — it covers v3 of the
 Evolution list above, which is the state of the code, not a version number.
+**1.0.1** recorded the move to GitHub.
 
 | Update | Bump | Example |
 |---|---|---|
@@ -132,8 +140,9 @@ Edit `VERSION` in the same commit as the change, then tag and mirror:
 
 ```powershell
 git -C "D:\claude\md-reader" commit -am "..."
-git -C "D:\claude\md-reader" tag -a v1.0.1 -m "..."
+git -C "D:\claude\md-reader" tag -a v1.0.2 -m "..."
 git -C "D:\claude\md-reader" push origin main --tags
+git -C "D:\claude\md-reader" push mirror main --tags
 ```
 
 ---
