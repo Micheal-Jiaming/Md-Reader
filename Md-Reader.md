@@ -56,7 +56,7 @@ The title bar shows a `*` next to the filename whenever there are unsaved edits.
 
 | File | Purpose |
 |---|---|
-| `md_editor.py` | Source code for the current reader + editor (237 lines) |
+| `md_editor.py` | Source code for the current reader + editor (278 lines) |
 | `dist/MD Reader.exe` | The compiled standalone app (~24 MB) — **not** in version control, rebuild it |
 | `MD Reader.spec` | PyInstaller recipe, written by the build command below; `py -m PyInstaller "MD Reader.spec"` reruns the same build. Its paths are relative, so build from this folder |
 | `generate_icon.py` | Draws the app icon with Pillow — edit and re-run to tweak the design |
