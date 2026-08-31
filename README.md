@@ -33,7 +33,7 @@ Requires 64-bit Windows 10 or later. The executable is unsigned, so SmartScreen 
 - **GitHub-styled rendering** — headings, bold and italic, lists, tables, blockquotes, links, images, horizontal rules, and syntax-highlighted fenced code blocks.
 - **Real file handling** — New, Open, Save and Save As, with a prompt to save before you open another file, start a new one, or quit.
 - **Opens files the obvious ways** — double-click the app, drag a `.md` file onto the exe, or pass a path on the command line.
-- **Fully offline** — Markdown is converted and rendered inside the process. Nothing is uploaded and no service is called.
+- **Fully offline** — `MD Reader.exe` converts and renders Markdown inside its own process. There is no telemetry and no server round-trip to display your file. (A document that itself references remote images or stylesheets will still fetch those, as any renderer would.)
 - **Portable** — copy the one file to any supported machine and run it.
 
 ## Keyboard shortcuts
@@ -60,6 +60,8 @@ py -m PyInstaller --noconfirm "MD Reader.spec"
 ```
 
 The build lands in `dist/MD Reader.exe`. Build from the repository root — the spec file uses relative paths. To run it without packaging, `py md_editor.py`.
+
+> **A note on `md_reader.py`.** That file is the original v1 launcher, kept for project history and superseded by `md_editor.py`. It is **not** the app described above and does not share its offline guarantee: it renders through [grip](https://github.com/joeyespo/grip), which uploads the file's contents to GitHub's Markdown API. Don't point it at anything confidential.
 
 ## Documentation
 

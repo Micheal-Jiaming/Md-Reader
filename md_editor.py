@@ -147,6 +147,10 @@ class MarkdownApp(tk.Tk):
             self._refresh_title()
 
     def _schedule_preview(self):
+        # Debounced, because every render re-converts the whole document and
+        # reloads the HTML frame - doing that per keystroke is visibly laggy on
+        # a long file. 250 ms still feels live while letting a burst of typing
+        # collapse into one render; each new keystroke cancels the pending job.
         if self._preview_job is not None:
             self.after_cancel(self._preview_job)
         self._preview_job = self.after(250, self.update_preview)
@@ -159,6 +163,11 @@ class MarkdownApp(tk.Tk):
                                      extension_configs=_MD_CONFIGS)
         except Exception as exc:  # noqa: BLE001
             body = f"<pre>Preview error:\n{exc}</pre>"
+        # Relative image paths in the document are resolved against base_url, so
+        # it must point at the open file's directory. The trailing slash is
+        # load-bearing: without it the last path segment is treated as a filename
+        # and replaced, resolving images one directory too high. An unsaved
+        # document has no directory to resolve against, hence base stays None.
         base = None
         if self.current_path:
             base = "file:///" + os.path.dirname(

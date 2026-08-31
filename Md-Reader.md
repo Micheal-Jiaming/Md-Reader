@@ -104,13 +104,13 @@ appear.
 
 | File | Purpose |
 |---|---|
-| `md_editor.py` | Source code for the current reader + editor (278 lines) |
+| `md_editor.py` | Source code for the current reader + editor (287 lines) |
 | `dist/MD Reader.exe` | The compiled standalone app (~24 MB) — **not** in version control; rebuild it, or download it from the GitHub release |
 | `MD Reader.spec` | PyInstaller recipe, written by the build command below; `py -m PyInstaller "MD Reader.spec"` reruns the same build. Its paths are relative, so build from this folder |
 | `generate_icon.py` | Draws the app icon with Pillow — edit and re-run to tweak the design |
 | `icon.ico` | Multi-resolution app icon (16 / 32 / 48 / 64 / 128 / 256 px) |
 | `icon_preview.png` | Large preview of the icon design |
-| `md_reader.py` | Original read-only launcher (grip-based, superseded) |
+| `md_reader.py` | Original read-only launcher (68 lines, grip-based, superseded) — renders via GitHub's API, so it needs internet and uploads what you open; see the caveat below |
 | `Md-Reader.md` | This document — the single source of truth for the project |
 | `VERSION` | Current version number, one line — see *Version control* below |
 | `README.md` | GitHub landing page for the public repository — short by design, and points here |
@@ -204,6 +204,29 @@ Going public changes two things about the layout:
 Because the history is public, remember that everything already pushed is visible —
 including commit messages and author identity. There is nothing sensitive in it, but
 a future secret would be unrecoverable rather than merely committed.
+
+### The `md_reader.py` privacy caveat
+
+Worth knowing before touching either file, because the two behave differently in a
+way that is easy to state wrongly. `md_editor.py` — the shipped app — converts
+Markdown in-process and renders it in-window, so a document never leaves the
+machine. `md_reader.py` calls `grip.serve()`, and **grip does not render Markdown
+itself**: it POSTs the file's contents to GitHub's Markdown API and displays the
+HTML that comes back. The superseded launcher therefore requires an internet
+connection and sends whatever it opens to a third party.
+
+This caught out the first draft of `README.md`, which advertised the project as
+"fully offline — nothing is uploaded and no service is called". True of the app,
+false of the launcher sitting beside it in the same public repository. Both files
+now say so explicitly. If `md_reader.py` is ever deleted as dead history, the
+README's note about it should go in the same commit rather than being left to
+describe a file that is not there.
+
+One related limit on the app's own offline claim: python-markdown passes raw HTML
+through, so a document containing remote `<img>` or `<link>` URLs will have those
+fetched by tkinterweb when previewed. That is ordinary renderer behaviour rather
+than a defect, but it means "offline" describes the rendering pipeline, not an
+absolute guarantee that previewing an untrusted file generates no network traffic.
 
 Tracked: `md_editor.py`, `md_reader.py`, `generate_icon.py`, `MD Reader.spec`,
 `icon.ico`, `icon_preview.png`, `README.md`, `LICENSE`, and this document.

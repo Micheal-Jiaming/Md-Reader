@@ -4,6 +4,13 @@ Double-click to run: pops up a file picker, then serves the chosen
 Markdown file with grip (GitHub-style rendering) and opens it in the
 default browser. The console window shows the local URL and lets you
 stop the server with Ctrl+C.
+
+Superseded by md_editor.py, which renders locally in its own window; this
+file is kept for project history. Note the difference that matters: grip
+does not render Markdown itself, it POSTs the file's contents to GitHub's
+Markdown API and displays the HTML that comes back. So this launcher needs
+an internet connection, and it sends whatever you open to a third party -
+do not point it at a confidential document.
 """
 
 import sys
